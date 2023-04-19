@@ -90,20 +90,21 @@ end
   validate :a, :format, TRAIN_NUMBER
   validate :b, :presence
   validate :c, :type, Integer
+
+  def initialize(t,i)
+    send(:t=,1)
+    send(:i=,9)
+  end
   
 end
- x=X.new
+ x=X.new(1, 3)
  x.a="fhfhjffj"
  x.b= nil
  x.c=45
  
- x.i=2
-  x.t=6
-  x.t=8
+
   puts "History t"
- x.t_history.each{|val| print "#{val}  "}
-  x.i=9
-  x.t=3
+  x.t_history.each{|val| print "#{val}  "}
   puts""
   print x.instance_variables
   puts""
