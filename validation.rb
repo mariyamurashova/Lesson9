@@ -17,31 +17,31 @@ end
 
 module InstanceMethods
      
-    def validate!
-      @validate_hash=self.class.instance_variable_get(:@validate_hash)
-      @validate_hash.each do |hash| 
-        variable = instance_variable_get("@#{hash[:name]}".to_sym)
-        send(:"validate_#{hash[:type]}", variable, hash[:param])   
-      end
+  def validate!
+    @validate_hash=self.class.instance_variable_get(:@validate_hash)
+    @validate_hash.each do |hash| 
+      variable = instance_variable_get("@#{hash[:name]}".to_sym)
+      send(:"validate_#{hash[:type]}", variable, hash[:param])   
     end
+  end
 
-    def validate_presence(variable, param)
-      raise "Variable #{variable}  presence is nil" if variable.nil? || variable.to_s.empty?
-    end
+  def validate_presence(variable, param)
+    raise "Variable #{variable}  presence is nil" if variable.nil? || variable.to_s.empty?
+  end
 
-    def validate_format(variable, param)
-      raise "Invalid format" if variable.to_s !~ param
-    end
+  def validate_format(variable, param)
+    raise "Invalid format" if variable.to_s !~ param
+  end
 
-    def validate_type(variable, param)
-      raise "Variable #{variable} type must be #{param} " if  variable.class == param
-    end
+  def validate_type(variable, param)
+    raise "Variable #{variable} type must be #{param} " if  variable.class == param
+  end
 
-    def valid?
-      validation!
-      true
-      rescue StandardError
-      false
+  def valid?
+    validation!
+    true
+    rescue StandardError
+    false
     end
   end
 end
