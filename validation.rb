@@ -16,9 +16,10 @@ end
 
 module InstanceMethods
 
-  def validate!(name, value)
-      @validate_hash=self.class.instance_variable_get("@validate_hash")
-      @variable_data = {var_name: name, var_value: value}
+     
+    def validate!(name, value)
+      @validate_hash=Train.instance_variable_get(:@validate_hash)
+      @variable_data_hash = {var_name: name, var_value: value}
       @validate_hash.each do |hash| 
         if hash[:name]== @variable_data_hash[:var_name] 
         send(:"validate_#{hash[:type]}", hash[:param])      
@@ -37,7 +38,6 @@ module InstanceMethods
     def validate_type(param)
       raise "Variable #{@variable_data_hash[:var_name]} type must be #{param} " if  @variable_data_hash[:var_value].class == param
     end
-
     def valid?
       validation!
       true
