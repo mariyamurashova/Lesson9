@@ -27,7 +27,7 @@ class Train
 
   def initialize(number, _full_carriage = 0)
     @speed = 0
-    @number = number.to_s
+    send(:number=, number.to_s)
     #validation!
     @@trains << self
     @train_carriage = []
@@ -136,8 +136,8 @@ class Train
     @stations_on_route[@current_station].come_in_trains(self)
   end
 
-  def validation!
-    raise 'Номер не может быть not_last_station' if number.nil?
-    raise 'Введен неверный формат номера поезда' if number !~ TRAIN_NUMBER
-  end
+  #def validation!
+    #raise 'Номер не может быть not_last_station' if number.nil?
+    #raise 'Введен неверный формат номера поезда' if number !~ TRAIN_NUMBER
+  #end
 end
