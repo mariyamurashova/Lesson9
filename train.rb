@@ -7,15 +7,12 @@ class Train
   include InstanceCounter
   include Validation
   include Accessors
-  #attr_accessor :speed
   attr_reader :train_type, :stations_on_route, :trains, :train_carriage, :type, :taken, :full_carriage_value
 
   attr_accessor_with_history :speed
   attr_accessor_strong :number
 
-  validate :number, :type, String
-  validate :number, :format, TRAIN_NUMBER
-  validate :number, :presence
+
 
   @@trains = []
   Train.set_instances
@@ -27,8 +24,8 @@ class Train
 
   def initialize(number, _full_carriage = 0)
     @speed = 0
-    send(:number=, number.to_s)
-    #validation!
+    @number = number.to_s
+    validate!
     @@trains << self
     @train_carriage = []
   end
@@ -136,8 +133,4 @@ class Train
     @stations_on_route[@current_station].come_in_trains(self)
   end
 
-  #def validation!
-    #raise 'Номер не может быть not_last_station' if number.nil?
-    #raise 'Введен неверный формат номера поезда' if number !~ TRAIN_NUMBER
-  #end
 end
