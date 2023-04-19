@@ -11,11 +11,9 @@ module ClassMethods
   def attr_accessor_strong(*names)
     names.each do |name|
       var_name="@#{name}".to_sym
-
       define_method(name) {instance_variable_get(var_name)}
-
       define_method("#{name}=".to_sym) do |value| 
-        validate!(name, value)
+        validate!
         instance_variable_set(var_name, value) 
         rescue StandardError => e
         puts "Error #{e.inspect}"
@@ -28,11 +26,8 @@ module ClassMethods
       var_values = "@#{name}_history".to_sym 
       array_history =[]
       var_name = "@#{name}".to_sym
-
         define_method(name) {instance_variable_get(var_name)}
-
         define_method("#{name}_history".to_sym) {instance_variable_get(var_values)}
-       
         define_method("#{name}=".to_sym) do |value| 
           instance_variable_set(var_name, value)
           array_history << value
