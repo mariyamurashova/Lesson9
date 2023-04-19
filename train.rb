@@ -12,8 +12,6 @@ class Train
   attr_accessor_with_history :speed
   attr_accessor_strong :number
 
-
-
   @@trains = []
   Train.set_instances
   Train.set_register_instances
