@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Validation
 
   def self.included(base)
@@ -8,36 +9,34 @@ module Validation
 
 module ClassMethods
 
-  def validate(name, type, *param)    
+  def validate(name, type, param=0)    
     @validate_hash ||= []
     @validate_hash << {name: name, type: type, param: param} 
   end
 end
 
 module InstanceMethods
-
      
-    def validate!(name, value)
-      @validate_hash=Train.instance_variable_get(:@validate_hash)
-      @variable_data_hash = {var_name: name, var_value: value}
+    def validate!
+      @validate_hash=self.class.instance_variable_get(:@validate_hash)
       @validate_hash.each do |hash| 
-        if hash[:name]== @variable_data_hash[:var_name] 
-        send(:"validate_#{hash[:type]}", hash[:param])      
-        end
+        variable = instance_variable_get("@#{hash[:name]}".to_sym)
+        send(:"validate_#{hash[:type]}", variable, hash[:param])   
       end
     end
 
-    def validate_presence(param)
-      raise "Variable #{@variable_data_hash[:var_name]}  presence is nil" if @variable_data_hash[:var_value].nil? || @variable_data_hash[:var_value].to_s.empty?
+    def validate_presence(variable, param)
+      raise "Variable #{variable}  presence is nil" if variable.nil? || variable.to_s.empty?
     end
 
-    def validate_format(param)
-      raise "Invalid format" if @variable_data_hash[:var_value].to_s !~ param[0]
+    def validate_format(variable, param)
+      raise "Invalid format" if variable.to_s !~ param
     end
 
-    def validate_type(param)
-      raise "Variable #{@variable_data_hash[:var_name]} type must be #{param} " if  @variable_data_hash[:var_value].class == param
+    def validate_type(variable, param)
+      raise "Variable #{variable} type must be #{param} " if  variable.class == param
     end
+
     def valid?
       validation!
       true
